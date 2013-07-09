@@ -42,3 +42,6 @@ def main():
         xmlText = getLineXML(line)
         filename = getFilename(line)
         writeXMLtoFile(filename, xmlText)
+
+if __name__ == '__main__':
+    main()
