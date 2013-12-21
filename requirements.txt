@@ -1,3 +1,7 @@
 argparse==1.2.1
+dateutils==0.6.6
+grequests==0.2.0
+python-dateutil==2.2
 requests==1.2.3
 wsgiref==0.1.2
+xmltodict==0.8.3
