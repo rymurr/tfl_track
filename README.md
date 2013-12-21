@@ -13,3 +13,5 @@ TODO
 1. lots of general data exploration, need to understand the dataset
 1. Ways to view, plot, graph, visualize the data. (see below)
 1. Start thinking of predicting problems?
+1. add tfl doc and write a doc of my own describing data
+1. set up script for deployment to server (may try out virtualization and docker for fun ;-)
