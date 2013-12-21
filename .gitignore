@@ -1,3 +1,5 @@
 *.pyc
 virtenv
+tflvenv
 *.swp
+tfl_xml
