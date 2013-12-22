@@ -15,20 +15,31 @@ def getXMLParser(filename):
     tree = xmltodict.parse(x)
     return tree['ROOT']
 
-def parseToJson(root):
+def parseToDataFrame(root):
+    columns = ('time', 'stationCode', 'stationName', 'platformCode', 'platformName', 'tripId', 'setId', 'destCode', 'timeToStation', 'location', 'destination')
+    allTrains = []
     time = parser.parse(root['Time']['@TimeStamp'])
-    items = []
-    for station in root['S']:
-        for platform in station['P']:
-            for train in platform['T']:
-                item = {}
-                item['timeStamp'] = time
-                item['station'] = station['@N']
-                item['platform'] = platform['@N']
-                for k,v in train.attrib.items():
-                    item[attribMap[k]] = v
-                items.append(item)    
-    return items,time            
+    stations = root['S']
+    for station in stations:
+        scode = station['@Code']
+        sname = station['@N']
+        platforms = station['P']
+        for platform in platforms:
+            pcode = int(platform['@Code'])
+            pname = platform['@N']
+            trains = platform.get('T', list())
+            if isinstance(trains, dict):
+                trains = [trains]
+            for train in trains:
+                tid = int(train['@T'])
+                setId = int(train['@S'])
+                destCode = int(train['@D'])
+                timeToStation = train['@C'].split(':')
+                timeToStation = datetime.timedelta() if len(timeToStation) == 1 else datetime.timedelta(minutes=int(timeToStation[0]), seconds=int(timeToStation[1]))
+                location = train['@L']
+                destination = train['@DE']
+                allTrains.append((time, scode, sname, pcode, pname, tid, setId, destCode, timeToStation, location, destination))
+    return pandas.DataFrame(allTrains, columns = columns)
 
 def main():
     allitems = []

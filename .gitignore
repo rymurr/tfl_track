@@ -3,3 +3,6 @@ virtenv
 tflvenv
 *.swp
 tfl_xml
+*.tar.bz2
+scraper/settings.py
+ipython_log*
