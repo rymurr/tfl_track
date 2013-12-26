@@ -6,6 +6,7 @@ import glob
 import json   
 import os
 import xmltodict
+import tarfile
 
    
 def parseToDataFrame(root):
@@ -43,5 +44,24 @@ def parseToDataFrame(root):
             trackCode = train['@TrackCode']
             allTrains.append((time, lineCode, lineName, scode, sname, smess, curTime, pcode, pname, lcid, setId, tid, secToStation, timeToStation, location, destCode, destination, departTime, departInterval, departed, direction, trackCode))
     return pandas.DataFrame(allTrains, columns = columns)
+
+
+def extractAll():
+    dfs = []
+    for filename in glob.glob('../tfl_xml-2013*.tar.bz2'):
+        print filename
+        with tarfile.open(filename) as tar:
+            xmls = [i for i in tar.getnames()]
+            for xml in xmls:
+                try:
+                    data = tar.extractfile(xml).read()
+                    doc = xmltodict.parse(data[6:])
+                    df = parseToDataFrame(doc['ROOT'])
+                    dfs.append(df)
+                except:
+                    pass
+    return pandas.concat(dfs)                    
+                    
+                
 
 
