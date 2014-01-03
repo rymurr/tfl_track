@@ -13,7 +13,9 @@ from settings import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
 #TODO: Need some major refactoring for generalizations. The filename stuff especially is pretty horrific
 
 
-BASE_DIR='tfl_xml'
+BASE_DIR='data/xml'
+XML_DIR='data/xml'
+BASE_DIR='data/xml'
 SUFFIX='.xml'
 SUMMARY_URL = 'http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/'
 DETAIL_URL = 'http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/'

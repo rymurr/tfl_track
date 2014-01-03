@@ -48,7 +48,7 @@ def parseToDataFrame(root):
 
 def extractAll():
     dfs = []
-    for filename in glob.glob('../tfl_xml-2013*.tar.bz2'):
+    for filename in glob.glob('../tfl_xml-20131221*.tar.bz2'):
         print filename
         with tarfile.open(filename) as tar:
             xmls = [i for i in tar.getnames()]
