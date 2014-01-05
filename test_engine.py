@@ -14,6 +14,5 @@ def test_getNextMidnight():
 def test_getGetSecondsDiff():
     date = datetime.datetime(2014,1,1)
     dt = datetime.datetime(2014,1,1,13,0,2,123)
-    print engine.getSecondsDiff(date, dt)
     assert engine.getSecondsDiff(date, dt) == 13*60*60+0*60+2+123.*1E-6
 
