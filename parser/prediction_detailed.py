@@ -1,13 +1,10 @@
-from StringIO import StringIO
-from dateutil import parser
 import pandas
 import datetime
 import glob
-import json   
-import os
 import xmltodict
-import tarfile
 
+from dateutil import parser
+from pandas.io.pytables import HDFStore
    
 def parseToDataFrame(root):
     columns = ('time', 'lineCode', 'lineName', 'stationCode', 'stationName', 'message', 'currentTime', 'platformCode', 'platformName', 'leadCarId', 'setId', 'tripId', 'secToStation', 'timeToStation', 'location', 'destCode', 'destination', 'departTime', 'departInterval', 'departed', 'direction', 'trackCode')
@@ -46,22 +43,22 @@ def parseToDataFrame(root):
     return pandas.DataFrame(allTrains, columns = columns)
 
 
-def extractAll():
+def extractAll(directory):
     dfs = []
-    for filename in glob.glob('../tfl_xml-20131221*.tar.bz2'):
-        print filename
-        with tarfile.open(filename) as tar:
-            xmls = [i for i in tar.getnames()]
-            for xml in xmls:
-                try:
-                    data = tar.extractfile(xml).read()
-                    doc = xmltodict.parse(data[6:])
-                    df = parseToDataFrame(doc['ROOT'])
-                    dfs.append(df)
-                except:
-                    pass
+    for filename in glob.glob(directory + '*.xml'):
+        with open(filename) as f:
+            data = f.read()
+            doc = xmltodict.parse(data[6:])
+            df = parseToDataFrame(doc['ROOT'])
+            dfs.append(df)
     return pandas.concat(dfs)                    
+
+def toHDF(hdfstore, df):
+    with HDFStore(hdfstore) as store:
+        store.append('dfDetail', df)
                     
                 
-
+def parsePredictionDetailed(hdf, directory):
+    df = extractAll(directory)
+    toHDF(hdf, df)
 

@@ -3,6 +3,11 @@ import gevent
 
 from gevent import monkey;monkey.patch_all()
 
+from scraper.line_summary import LineSummary
+from scraper.station_summary import StationsSummary
+from scraper.prediction_detailed import PredictionDetailed 
+from scraper.prediction_summary import PredictionSummary
+
 #TODO:
 #more testing
 #logging and instrumentation
@@ -18,7 +23,7 @@ def getSecondsDiff(now, later):
     return (later-now).total_seconds()
 
 
-def main(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks = None, period = 30):
+def mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks = None, period = 30):
     now = datetime.datetime.today()
     later = getNextMidnight(now)
     repeat = repeatTask(fetchCallbacks, parseCallbacks, cleanupCallbacks, period)
@@ -52,4 +57,15 @@ def midnightTask(midnightCallbacks):
         midnight = gevent.spawn_later(getSecondsDiff(now, later), midnightTask, midnightCallbacks)
     return midnight    
 
+def main():
+    hdf = getHDFStore()
+    fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
+    parseCallbacks = [partial(parsePredictionSummary, hdf, fetchCallbacks[2].base),
+                      partial(parsePredictionDetailed, hdf, fetchCallbacks[3].base)
+                     ]
+    cleanupCallbacks = []
+    midnightCallbacks = []
+    mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks)
 
+if __name__ == '__main__':
+    main()
