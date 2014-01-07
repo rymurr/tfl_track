@@ -3,10 +3,15 @@ import gevent
 
 from gevent import monkey;monkey.patch_all()
 
-from scraper.line_summary import LineSummary
-from scraper.station_summary import StationsSummary
+from scraper.line_status import LineStatus
+from scraper.station_status import StationStatus
 from scraper.prediction_detailed import PredictionDetailed 
 from scraper.prediction_summary import PredictionSummary
+
+from parse.line_status import LineStatusParse 
+from parse.station_status import StationStatusParse
+from parse.prediction_detailed import PredictionDetailedParse
+from parse.prediction_summary import PredictionSummaryParse
 
 #TODO:
 #more testing
@@ -58,10 +63,12 @@ def midnightTask(midnightCallbacks):
     return midnight    
 
 def main():
-    hdf = getHDFStore()
+    hdf = 'store.h5'#getHDFStore()
     fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
-    parseCallbacks = [partial(parsePredictionSummary, hdf, fetchCallbacks[2].base),
-                      partial(parsePredictionDetailed, hdf, fetchCallbacks[3].base)
+    parseCallbacks = [StationStatusParse(fetchCallbacks[0].base, hdf),
+                      LineStatusParse(fetchCallbacks[1].base, hdf),
+                      PredictionSummaryParse(fetchCallbacks[2].base, hdf),
+                      PredictionDetailedParse(fetchCallbacks[3].base, hdf)
                      ]
     cleanupCallbacks = []
     midnightCallbacks = []

@@ -3,7 +3,9 @@ Scraper code for TFL website
 TODO
 ----
 
-1. finish refactor
+1. finish cleanup jobs and midnight jobs
+1. move files around and rename
+1. fix bugs when tube is closed
 1. need a good setup for hdf5 file...should add some meta data, compress, index etc
 1. start doing summaries of trains and look for patterns
 1. lots of general data exploration, need to understand the dataset

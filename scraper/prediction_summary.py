@@ -5,7 +5,7 @@ import base
 from data import LINES
 
 
-BASE_DIR='data/xml/predction_summary'
+BASE_DIR='data/xml/prediction_summary/'
 SUMMARY_URL = 'http://cloud.tfl.gov.uk/TrackerNet/PredictionSummary/'
 
 class PredictionSummary(base.Base):
