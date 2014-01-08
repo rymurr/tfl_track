@@ -3,17 +3,14 @@ Scraper code for TFL website
 TODO
 ----
 
-1. finish cleanup jobs and midnight jobs
-1. move files around and rename
-1. fix bugs when tube is closed
+1. finish midnight jobs
 1. need a good setup for hdf5 file...should add some meta data, compress, index etc
 1. start doing summaries of trains and look for patterns
 1. lots of general data exploration, need to understand the dataset
 1. Ways to view, plot, graph, visualize the data. (see below)
 1. Start thinking of predicting problems?
-1. add tfl docs and write a doc of my own describing data
+1. write a doc of my own describing data sets
 1. set up script for deployment to server (may try out virtualization and docker for fun ;-)
-1. more robust collector
 1. monitoring and stats -- scraper should dump size and # of files into rrd on every run. Parser should do the same for records. Metadata on storage locations too.
 1. Monitor size of production hdf5 file
 
@@ -36,6 +33,17 @@ Plan for a webpage and mobile apps?
 
 ARGH! Lots to do!
 
+
+IDEAS FOR TRACKING
+------------------
+* time each step 
+* cound number of xml files fetched and size
+* count number of rows per table added
+* keep track of size of hdf5 object
+* total size of s3 buckets
+* total count of xml files
+* total row count
+* intelligent and parseable/collectable logs (stdout though so docker sees them?)
 
 THOUGHTS
 --------
