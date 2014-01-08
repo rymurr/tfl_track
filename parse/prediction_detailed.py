@@ -1,5 +1,6 @@
 import pandas
 import datetime
+import numpy as np
 
 from dateutil import parser
 from parse import base
@@ -48,5 +49,6 @@ class PredictionDetailedParse(base.Base):
                 allTrains.append((time, lineCode, lineName, scode, sname, smess, curTime, pcode, pname, lcid, setId, tid, secToStation, timeToStation, location, destCode, destination, departTime, departInterval, departed, direction, trackCode))
         if len(allTrains) == 0:
             return pandas.DataFrame(columns=columns)
-        return pandas.DataFrame(allTrains, columns = columns)
-
+        df = pandas.DataFrame(allTrains, columns = columns)
+        df['timeToStation'] = df.timeToStation.map(lambda x:x.astype(np.float)/1E9)
+        return df

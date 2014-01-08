@@ -21,9 +21,12 @@ class Base(object):
         for filename in glob.glob(directory + '*.xml'):
             with open(filename) as f:
                 data = f.read()
-                doc = xmltodict.parse(data[6:])
-                df = self.parseToDataFrame(doc)
-                dfs.append(df)
+                try:
+                    doc = xmltodict.parse(data[6:])
+                    df = self.parseToDataFrame(doc)
+                    dfs.append(df)
+                except:
+                    continue
         dfd = pandas.concat(dfs)
         dfd['dateTime'] = datetime.datetime.now()
         return dfd
@@ -31,9 +34,13 @@ class Base(object):
     def toHDF(self, hdfstore, df, name):
         for i in df.dtypes[df.dtypes==object].index:
             df[i] = df[i].map(lambda x:convert(x))
-        store = HDFStore(hdfstore)
-        store.append(name, df)
-        store.close()
+        dfx = df.dropna(how='all', axis=1)    
+        try:
+            store = HDFStore(hdfstore)
+            store.append(name, dfx)
+            store.close()
+        except:
+            import pdb;pdb.set_trace()
                 
     def __call__(self):
         df = self.extractAll(self.directory)
