@@ -10,22 +10,7 @@ from parse.station_status import StationStatusParse
 from parse.prediction_detailed import PredictionDetailedParse
 from parse.prediction_summary import PredictionSummaryParse
 
-from cleanup import createTar, uploadToS3
-
-def getHDFStore():
-    #create filename
-    #open object with compression
-    #write metadata table (datetime created, and???)
-    #close and return filename
-    return 'store.h5'
-
-def midnightRollHDF():
-    #set indicies
-    #close hdf5 and write any more metadata?
-    #copy to S3
-    #delete
-    #call for new store
-    pass
+from cleanup import createTar, uploadToS3, getHDFStore, midnightRollHDF
 
 def main():
     hdf = getHDFStore()

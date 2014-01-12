@@ -1,3 +1,4 @@
+import subprocess
 import glob
 import tarfile
 import datetime
@@ -10,29 +11,30 @@ from settings import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
 
 XML_DIR='data/xml/'
 TAR_DIR='data/tarballs/'
+HDF_DIR="data/hdf/"
 
 def createTar():
     prefix = os.path.expanduser(TAR_DIR)
     checkBase(prefix)
     xmlprefix = os.path.expanduser(XML_DIR)
-    tarfilename = prefix + datetime.datetime.today().strftime('-%Y%m%d-%H%M%S')+'.tar.bz2'
+    tarfilename = prefix + datetime.datetime.today().strftime('%Y%m%d-%H%M%S')+'.tar.bz2'
     _, dirs, _ = os.walk(XML_DIR).next()
     with tarfile.open(tarfilename, 'w:bz2') as tar:
         for directory in dirs:
             fdir = os.path.join(xmlprefix,directory)
             for filename in glob.glob(os.path.join(fdir,'*.xml')):
                 tar.add(filename)
-        for filename in os.listdir(fdir):
-            fpath = os.path.join(prefix, filename)
-            try:
-                if os.path.isfile(fpath):
-                    os.unlink(fpath)
-            except:
-                pass
+            for filename in os.listdir(fdir):
+                fpath = os.path.join(fdir, filename)
+                try:
+                    if os.path.isfile(fpath):
+                        os.unlink(fpath)
+                except:
+                    pass
     return tarfilename
  
 
-def uploadToS3():
+def uploadToS3(upload_dir=TAR_DIR):
     conn = S3Connection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
     bucket = conn.get_bucket(AWS_ACCESS_KEY_ID.lower() + '_tfl_data') 
     prefix = os.path.expanduser(TAR_DIR)
@@ -53,4 +55,16 @@ def checkBase(path):
     else:
         assert os.path.isdir(path)
 
+def getHDFStore():
+    hdf = os.path.join(HDF_DIR, 'store.h5')
+    checkBase(HDF_DIR)
+    return hdf
+
+def midnightRollHDF():
+    olddir = os.path.join(HDF_DIR, 'store.h5')
+    newdir = os.path.join(HDF_DIR, datetime.datetime.now().strftime('%Y%m%d.h5'))
+    #set indicies
+    process = subprocess.Popen(("ptrepack", "--chunkshape=auto", "--propindexes", "--complevel=9", "--complib=bzip2", olddir, newdir), stdout=subprocess.PIPE)
+    print process.communicate()[0]
+    uploadToS3(HDF_DIR)
 

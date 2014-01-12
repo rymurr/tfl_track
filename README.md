@@ -3,8 +3,6 @@ Scraper code for TFL website
 TODO
 ----
 
-1. finish midnight jobs
-1. need a good setup for hdf5 file...should add some meta data, compress, index etc
 1. start doing summaries of trains and look for patterns
 1. lots of general data exploration, need to understand the dataset
 1. Ways to view, plot, graph, visualize the data. (see below)
@@ -13,6 +11,7 @@ TODO
 1. set up script for deployment to server (may try out virtualization and docker for fun ;-)
 1. monitoring and stats -- scraper should dump size and # of files into rrd on every run. Parser should do the same for records. Metadata on storage locations too.
 1. Monitor size of production hdf5 file
+1. add indicies to hdf5 file when I understand the data better
 
 NOTES
 -----
