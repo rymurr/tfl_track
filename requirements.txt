@@ -1,7 +1,16 @@
+Cython==0.19.2
 argparse==1.2.1
+boto==2.21.0
 dateutils==0.6.6
+gevent==1.0
+greenlet==0.4.1
 grequests==0.2.0
+numexpr==2.2.2
+numpy==1.8.0
+pandas==0.12.0
 python-dateutil==2.2
-requests==1.2.3
+pytz==2013.8
+six==1.4.1
+tables==3.0.0
 wsgiref==0.1.2
 xmltodict==0.8.3
