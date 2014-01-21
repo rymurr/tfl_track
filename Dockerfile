@@ -30,6 +30,7 @@ add . /home/docker/code/
 run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 
 # run pip install
+run pip install setuptools --no-use-wheel --upgrade
 run pip install -r /home/docker/code/app/requirements.txt
 
 
