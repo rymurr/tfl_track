@@ -13,7 +13,6 @@ key=`curl --key client.key --cert client.crt --cacert server.pem -L https://$ETC
 
 sed "s|AWSSECRET|$secret|" settings.py.template | sed "s|AWSKEY|$key|" > app/settings.py
 
-/usr/sbin/sshd
 supervisord -n
 
 

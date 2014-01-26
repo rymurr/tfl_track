@@ -6,7 +6,7 @@ try:
 except:
     try:
         sts = boto.connect_sts()
-        ar = sts.assume_role(role_arn="arn:aws:iam::710599580852:role/remote", role_session_name="rymurr")
+        ar = sts.assume_role(role_arn="arn:aws:iam::710599580852:role/remote2", role_session_name="rymurr")
         AWS_ACCESS_KEY_ID = ar.credentials.access_key
         AWS_SECRET_ACCESS_KEY = ar.credentials.secret_key
         TOKEN = ar.credentials.session_token

@@ -36,8 +36,8 @@ def createTar():
 
 def uploadToS3(upload_dir=TAR_DIR):
     conn = S3Connection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
-    bucket = conn.get_bucket(AWS_ACCESS_KEY_ID.lower() + '_tfl_data') 
-    prefix = os.path.expanduser(TAR_DIR)
+    bucket = conn.get_bucket('0nk38gf20cct6vytbg02_tfl_data')
+    prefix = os.path.expanduser(upload_dir)
     for filename in os.listdir(prefix):
         key = Key(bucket)
         key.key = filename
@@ -64,7 +64,10 @@ def midnightRollHDF():
     olddir = os.path.join(HDF_DIR, 'store.h5')
     newdir = os.path.join(HDF_DIR, datetime.datetime.now().strftime('%Y%m%d.h5'))
     #set indicies
+    print 'foo'
     process = subprocess.Popen(("ptrepack", "--chunkshape=auto", "--propindexes", "--complevel=9", "--complib=bzip2", olddir, newdir), stdout=subprocess.PIPE)
     print process.communicate()[0]
+    print 'bar'
     uploadToS3(HDF_DIR)
+    print 'baz'
 

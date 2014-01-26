@@ -21,7 +21,16 @@ run apt-get update
 run apt-get install -y build-essential 
 run apt-get install -y python python-dev python-setuptools
 run apt-get install -y supervisor
+run apt-get install -y libhdf5-serial-1.8.4 libhdf5-serial-dev hdf5-tools
 run easy_install pip
+run pip install setuptools --no-use-wheel --upgrade
+run pip install numpy
+run pip install Cython 
+run pip install numexpr
+run pip install pandas
+run pip install argparse boto dateutils gevent greenlet grequests pytz python-dateutil six wsgiref xmltodict
+run apt-get install -y curl libbz2-dev
+run pip install tables
 
 # install our code
 add . /home/docker/code/
@@ -29,12 +38,8 @@ add . /home/docker/code/
 # setup all the configfiles
 run ln -s /home/docker/code/supervisor-app.conf /etc/supervisor/conf.d/
 
-# run pip install
-run pip install setuptools --no-use-wheel --upgrade
-run pip install -r /home/docker/code/app/requirements.txt
-
-
-cmd ["supervisord", "-n"]
+workdir /home/docker/code
+cmd ["bash", "runApp.sh"]
 
 #run uwsgi
 #run uwsgi -s /home/docker/code/app.sock --wsgi-file /home/docker/code/app/app.py --callable app
