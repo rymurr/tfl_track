@@ -47,5 +47,5 @@ class PredictionDetailed(base.Base):
         gevent.joinall(jobs)
         filenames = list(itertools.chain(*[i.value for i in jobs]))
         print 'Done Stations!'
-        return self.sendToSqs(filenames, 'tfl_qeueu_xml_'+self.name)
+        return self.sendToSqs(filenames, 'tfl_queue_xml_'+self.name)
 
