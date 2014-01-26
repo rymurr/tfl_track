@@ -17,7 +17,7 @@ def main():
                      ]
     cleanupCallbacks = [createTar, uploadToS3]
     midnightCallbacks = [midnightRollHDF]
-    mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks)
+    mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks, period=150)
 
 if __name__ == '__main__':
     main()
