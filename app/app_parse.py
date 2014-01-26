@@ -1,10 +1,5 @@
 from engine import mainLoop
 
-from scraper.line_status import LineStatus
-from scraper.station_status import StationStatus
-from scraper.prediction_detailed import PredictionDetailed 
-from scraper.prediction_summary import PredictionSummary
-
 from parse.line_status import LineStatusParse 
 from parse.station_status import StationStatusParse
 from parse.prediction_detailed import PredictionDetailedParse
@@ -14,7 +9,7 @@ from cleanup import createTar, uploadToS3, getHDFStore, midnightRollHDF
 
 def main():
     hdf = getHDFStore()
-    fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
+    fetchCallbacks = []
     parseCallbacks = [StationStatusParse( hdf),
                       LineStatusParse( hdf),
                       PredictionSummaryParse( hdf),

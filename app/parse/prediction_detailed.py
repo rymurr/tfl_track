@@ -6,8 +6,8 @@ from dateutil import parser
 from parse import base
    
 class PredictionDetailedParse(base.Base):   
-    def __init__(self, directory, hdf):
-        super(PredictionDetailedParse, self).__init__(directory, hdf, 'dfDetail')
+    def __init__(self, hdf):
+        super(PredictionDetailedParse, self).__init__(hdf, 'dfDetail', 'detailed')
 
 
     def parseToDataFrame(self, doc):

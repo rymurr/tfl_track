@@ -5,8 +5,8 @@ from dateutil import parser
 from parse import base
 
 class StationStatusParse(base.Base):   
-    def __init__(self, directory, hdf):
-        super(StationStatusParse, self).__init__(directory, hdf, 'dfStation')
+    def __init__(self, hdf):
+        super(StationStatusParse, self).__init__(hdf, 'dfStation', 'station')
 
   
     def parseToDataFrame(self, doc):

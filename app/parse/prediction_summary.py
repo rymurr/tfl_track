@@ -6,8 +6,8 @@ from dateutil import parser
 from parse import base
    
 class PredictionSummaryParse(base.Base):   
-    def __init__(self, directory, hdf):
-        super(PredictionSummaryParse, self).__init__(directory, hdf, 'dfSummary')
+    def __init__(self, hdf):
+        super(PredictionSummaryParse, self).__init__(hdf, 'dfSummary', 'summary')
 
     def parseToDataFrame(self, doc):
         root = doc['ROOT']

@@ -5,8 +5,8 @@ from dateutil import parser
 from parse import base
    
 class LineStatusParse(base.Base):   
-    def __init__(self, directory, hdf):
-        super(LineStatusParse, self).__init__(directory, hdf, 'dfLine')
+    def __init__(self, hdf):
+        super(LineStatusParse, self).__init__(hdf, 'dfLine', 'line')
 
     def parseToDataFrame(self, doc):
         root = doc['ArrayOfLineStatus']

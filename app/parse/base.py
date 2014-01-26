@@ -5,20 +5,23 @@ import xmltodict
 import pandas
 
 from pandas.io.pytables import HDFStore
+from sqsController import recieveFromSqs, sendToSqs
 
 class Base(object):
     
-    def __init__(self, directory, hdf, name):
+    def __init__(self, hdf, name, qname):
         self.hdf = hdf
-        self.directory = directory
         self.name = name
+        self.qname = qname
 
     def parseToDataFrame(self, doc):
         return pandas.DataFrame()
 
-    def extractAll(self, directory):
+    def extractAll(self, filenames):
+        if len(filenames) == 0:
+            return
         dfs = []
-        for filename in glob.glob(directory + '*.xml'):
+        for filename in filenames:
             with open(filename) as f:
                 data = f.read()
                 try:
@@ -43,8 +46,13 @@ class Base(object):
             import pdb;pdb.set_trace()
                 
     def __call__(self):
-        df = self.extractAll(self.directory)
-        self.toHDF(self.hdf, df, self.name)
+        filenames = recieveFromSqs('tfl_queue_xml_'+self.qname)
+        if filenames is None:
+            return
+        df = self.extractAll(filenames.split(','))
+        if df is not None:
+            self.toHDF(self.hdf, df, self.name)
+            return sendToSqs(filenames.split(','), 'tfl_queue_tar')
 
 
 def convert(x):
