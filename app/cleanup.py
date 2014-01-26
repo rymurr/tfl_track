@@ -23,12 +23,12 @@ def createTar():
     tarfilename = prefix + datetime.datetime.today().strftime('%Y%m%d-%H%M%S')+'.tar.bz2'
     with tarfile.open(tarfilename, 'w:bz2') as tar:
         for filename in filenames:
+            try:
             #fdir = os.path.join(xmlprefix,directory)
             #for filename in glob.glob(os.path.join(fdir,'*.xml')):
-            tar.add(filename)
+                tar.add(filename)
             #for filename in os.listdir(fdir):
             #fpath = os.path.join(fdir, filename)
-            try:
                 if os.path.isfile(filename):
                     os.unlink(filename)
             except:
