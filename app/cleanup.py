@@ -21,6 +21,7 @@ def createTar():
     prefix = os.path.expanduser(TAR_DIR)
     checkBase(prefix)
     tarfilename = prefix + datetime.datetime.today().strftime('%Y%m%d-%H%M%S')+'.tar.bz2'
+    import ipdb;ipdb.set_trace()
     with tarfile.open(tarfilename, 'w:bz2') as tar:
         for filename in filenames:
             try:

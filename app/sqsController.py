@@ -29,8 +29,9 @@ def recieveAllFromSqs(queue_name = 'tfl_queue_xml', delete=True):
     fns = []
     for m in ms:
         fnStr = m.get_body()
-        if delete:
-            q.delete_message(m)
+        #if delete:
+        #    q.delete_message(m)
         fns.extend(fnStr.split(','))
+    q.clear()
     return fns    
 
