@@ -3,9 +3,12 @@ import datetime
 import grequests
 import requests
 
+from logbook import Logger
+
 from sqsController import sendToSqs
 SUFFIX='.xml'
 
+log = Logger(__name__)
 class Base(object):
 
     def __init__(self, url, base, name):
@@ -45,7 +48,7 @@ class Base(object):
         xmlText = self.getLineXMLAsync()[0]
         filename = self.getFilename()
         self.writeXMLtoFile(filename, xmlText) 
-        print 'done base'
+        log.info('Done base fetch, fetched 1 file')
         return self.sendToSqs([filename], 'tfl_queue_xml_'+self.name)
  
 def checkBase(path):

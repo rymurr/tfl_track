@@ -1,3 +1,4 @@
+from logbook import Logger
 from engine import mainLoop
 
 from scraper.line_status import LineStatus
@@ -12,8 +13,10 @@ from parse.prediction_summary import PredictionSummaryParse
 
 from cleanup import createTar, uploadToS3, getHDFStore, midnightRollHDF
 
+log = Logger(__name__)
 def main():
     hdf = getHDFStore()
+    log.info('HDF file is {0}'.format(hdf))
     fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
     parseCallbacks = [StationStatusParse( hdf),
                       LineStatusParse( hdf),

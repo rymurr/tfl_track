@@ -4,11 +4,15 @@ import itertools
 import os
 import base
 
+from logbook import Logger
+
 from data import LINE_STATIONS, LINES
 
 
 BASE_DIR='data/xml/prediction_detailed/'
 DETAIL_URL = 'http://cloud.tfl.gov.uk/TrackerNet/PredictionDetailed/'
+
+log = Logger(__name__)
 
 class PredictionDetailed(base.Base):
     def __init__(self):
@@ -46,6 +50,6 @@ class PredictionDetailed(base.Base):
         jobs = [gevent.spawn(self.write, line=i.value[0], names=i.value[1], xmlTexts=i.value[2]) for i in jobs]
         gevent.joinall(jobs)
         filenames = list(itertools.chain(*[i.value for i in jobs]))
-        print 'Done Stations!'
+        log.info('Done Stations, fetched {0} records'.format(len(filenames)))
         return self.sendToSqs(filenames, 'tfl_queue_xml_'+self.name)
 

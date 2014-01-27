@@ -6,7 +6,6 @@ from scraper.prediction_detailed import PredictionDetailed
 from scraper.prediction_summary import PredictionSummary
 
 def main():
-    hdf = getHDFStore()
     fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
     parseCallbacks = []
     cleanupCallbacks = []
