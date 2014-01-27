@@ -6,7 +6,7 @@ import pandas
 
 from logbook import Logger
 from pandas.io.pytables import HDFStore
-from sqsController import recieveFromSqs, sendToSqs
+from sqsController import recieveAllFromSqs, sendToSqs
 
 log = Logger(__name__)
 
@@ -59,13 +59,13 @@ class Base(object):
             log.exception('hdf creation failed')
                 
     def __call__(self):
-        filenames = recieveFromSqs('tfl_queue_xml_'+self.qname)
+        filenames = recieveAllFromSqs('tfl_queue_xml_'+self.qname)
         if filenames is None:
             return
-        df = self.extractAll(filenames.split(','))
+        df = self.extractAll(filenames)
         if df is not None:
             self.toHDF(self.hdf, df, self.name)
-            return sendToSqs(filenames.split(','), 'tfl_queue_tar')
+            return sendToSqs(filenames, 'tfl_queue_tar')
 
 
 def convert(x):
