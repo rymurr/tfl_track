@@ -1,12 +1,9 @@
 from engine import mainLoop
 
-from scraper.line_status import LineStatus
-from scraper.station_status import StationStatus
-from scraper.prediction_detailed import PredictionDetailed 
-from scraper.prediction_summary import PredictionSummary
+from scraper.base import Base
 
 def main():
-    fetchCallbacks = [StationStatus(), LineStatus(), PredictionSummary(), PredictionDetailed()]
+    fetchCallbacks = [Base()]
     parseCallbacks = []
     cleanupCallbacks = []
     midnightCallbacks = []

@@ -11,38 +11,10 @@ from settings import AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
 from sqsController import recieveAllFromSqs, sendToSqs
 
 
-XML_DIR='data/xml/'
 TAR_DIR='data/tarballs/'
 HDF_DIR="data/hdf/"
 
 log = Logger(__name__)
-
-def createTar():
-    filenames = recieveAllFromSqs('tfl_queue_tar')
-    log.info('Creating tarfile from {0} files'.format(len(filenames)))
-    if len(filenames) == 0:
-        return
-    log.debug('Filenames are: {0}'.format(filenames))
-    prefix = os.path.expanduser(TAR_DIR)
-    checkBase(prefix)
-    tarfilename = prefix + datetime.datetime.today().strftime('%Y%m%d-%H%M%S')+'.tar.bz2'
-    log.info('Writing to tarfile: {0}'.format(tarfilename))
-    with tarfile.open(tarfilename, 'w:bz2') as tar:
-        for filename in filenames:
-            try:
-            #fdir = os.path.join(xmlprefix,directory)
-            #for filename in glob.glob(os.path.join(fdir,'*.xml')):
-                tar.add(filename)
-                log.debug('Adding to tar file {0}'.format(filename))
-            #for filename in os.listdir(fdir):
-            #fpath = os.path.join(fdir, filename)
-                log.debug('Deleting file {0}'.format(filename))
-                if os.path.isfile(filename):
-                    os.unlink(filename)
-            except:
-                log.exception('Add failed for filename {0}'.format(filename))
-    return sendToSqs([tarfilename], 'tfl_queue_upload')
- 
 
 def keyName(filename):
     sName = filename.split('/')[-1]

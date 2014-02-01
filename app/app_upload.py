@@ -11,16 +11,10 @@ from cleanup import createTar, uploadToS3, getHDFStore, midnightRollHDF
 
 log = Logger(__name__)
 def main():
-    hdf = getHDFStore()
-    log.info('HDF file is {0}'.format(hdf))
     fetchCallbacks = []
-    parseCallbacks = [StationStatusParse( hdf),
-                      LineStatusParse( hdf),
-                      PredictionSummaryParse( hdf),
-                      PredictionDetailedParse( hdf)
-                     ]
-    cleanupCallbacks = []
-    midnightCallbacks = [midnightRollHDF]
+    parseCallbacks = [ ]
+    cleanupCallbacks = [uploadToS3]
+    midnightCallbacks = []
     mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks)
 
 if __name__ == '__main__':
