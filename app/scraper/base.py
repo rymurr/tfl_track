@@ -28,7 +28,7 @@ class Base(object):
     def getFilename(self, **kwargs):        
         line = kwargs.get('line', None)
         pre = kwargs.get('pre', None)
-        date = datetime.datetime.today().strftime('%Y%m%d-%H%M%s%f')
+        date = datetime.datetime.today().strftime('%Y%m%d-%H%M%S')
         linePrefix = ('-'+pre) if pre else ''
         pprefix = ('-'+line) if line else ''
         prefix = os.path.join(os.path.expanduser(self.base),date+linePrefix+pprefix)

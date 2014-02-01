@@ -85,7 +85,7 @@ def getHDFStore():
 
 def midnightRollHDF():
     olddir = os.path.join(HDF_DIR, 'store.h5')
-    newdir = os.path.join(HDF_DIR, datetime.datetime.now().strftime('%Y%m%d-%H%M%s.h5'))
+    newdir = os.path.join(HDF_DIR, datetime.datetime.now().strftime('%Y%m%d-%H%M%S.h5'))
     #set indicies
     log.info('Compressing hdf file {0} to new hdf file {1}'.format(olddir, newdir))
     process = subprocess.Popen(("ptrepack", "--chunkshape=auto", "--propindexes", "--complevel=9", "--complib=bzip2", olddir, newdir), stdout=subprocess.PIPE)

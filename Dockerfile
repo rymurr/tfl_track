@@ -31,6 +31,7 @@ run pip install pandas
 run pip install argparse boto dateutils gevent greenlet grequests pytz python-dateutil six wsgiref xmltodict
 run apt-get install -y curl libbz2-dev
 run pip install tables
+run pip install logbook
 
 # install our code
 add . /home/docker/code/

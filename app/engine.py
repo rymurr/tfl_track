@@ -22,7 +22,7 @@ def getSecondsDiff(now, later):
 
 def mainLoop(fetchCallbacks, parseCallbacks, cleanupCallbacks, midnightCallbacks , period = 30):
     now = datetime.datetime.today()
-    log.info('Started main look at {0}'.format(now.strftime('%Y%m%d-%H%M%s')))
+    log.info('Started main look at {0}'.format(now.strftime('%Y%m%d-%H%M%S')))
     log.info('We are doing {0} fetch callbacks, {1} parse callbacks, {2} cleanup callbacks and {3} midnight callbacks'.format(len(fetchCallbacks), len(parseCallbacks), len(cleanupCallbacks), len(midnightCallbacks)))
     log.info('Tasks will be run every {0} seconds'.format(period))
     later = getNextMidnight(now)
@@ -63,7 +63,7 @@ def midnightTask(midnightCallbacks):
     finally:
         now = datetime.datetime.today()
         later = getNextMidnight(now)
-        log.info('Scheduling next midnight job for {0} in {1} seconds'.format(later.strftime('%Y%m%d-%H%M%s'), str(getSecondsDiff(now, later))))
+        log.info('Scheduling next midnight job for {0} in {1} seconds'.format(later.strftime('%Y%m%d-%H%M%S'), str(getSecondsDiff(now, later))))
         midnight = gevent.spawn_later(getSecondsDiff(now, later), midnightTask, midnightCallbacks)
     return midnight    
 
