@@ -1,17 +1,16 @@
-import pandas
 import datetime
-import numpy as np
 
 from dateutil import parser
 from parse import base
+from collections import namedtuple
    
+PredictionSummaryRow = namedtuple('PredictionSummaryRow', ('time', 'stationCode', 'stationName', 'platformCode', 'platformName', 'tripId', 'setId', 'destCode', 'timeToStation', 'location', 'destination'))
 class PredictionSummaryParse(base.Base):   
     def __init__(self, hdf):
         super(PredictionSummaryParse, self).__init__(hdf, 'dfSummary', 'summary')
 
     def parseToDataFrame(self, doc):
         root = doc['ROOT']
-        columns = ('time', 'stationCode', 'stationName', 'platformCode', 'platformName', 'tripId', 'setId', 'destCode', 'timeToStation', 'location', 'destination')
         allTrains = []
         time = parser.parse(root['Time']['@TimeStamp'])
         stations = root['S']
@@ -35,9 +34,5 @@ class PredictionSummaryParse(base.Base):
                     timeToStation = datetime.timedelta() if len(timeToStation) == 1 else datetime.timedelta(minutes=int(timeToStation[0]), seconds=int(timeToStation[1]))
                     location = train['@L']
                     destination = train['@DE']
-                    allTrains.append((time, scode, sname, pcode, pname, tid, setId, destCode, timeToStation, location, destination))
-        if len(allTrains) == 0:
-            return pandas.DataFrame(columns=columns)
-        df = pandas.DataFrame(allTrains, columns = columns)
-        df['timeToStation'] = df.timeToStation.map(lambda x:x.astype(np.float)/1E9)
-        return df
+                    allTrains.append(PredictionSummaryRow(time, scode, sname, pcode, pname, tid, setId, destCode, timeToStation, location, destination))
+        return allTrains

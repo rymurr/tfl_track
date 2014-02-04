@@ -1,10 +1,10 @@
-import pandas
 import datetime
-import numpy as np
 
 from dateutil import parser
+from collections import namedtuple
 from parse import base
    
+PredictionDetailedRow = namedtuple('PredictionDetailedRow', ('time', 'lineCode', 'lineName', 'stationCode', 'stationName', 'message', 'currentTime', 'platformCode', 'platformName', 'leadCarId', 'setId', 'tripId', 'secToStation', 'timeToStation', 'location', 'destCode', 'destination', 'departTime', 'departInterval', 'departed', 'direction', 'trackCode'))
 class PredictionDetailedParse(base.Base):   
     def __init__(self, hdf):
         super(PredictionDetailedParse, self).__init__(hdf, 'dfDetail', 'detailed')
@@ -12,7 +12,6 @@ class PredictionDetailedParse(base.Base):
 
     def parseToDataFrame(self, doc):
         root = doc['ROOT']
-        columns = ('time', 'lineCode', 'lineName', 'stationCode', 'stationName', 'message', 'currentTime', 'platformCode', 'platformName', 'leadCarId', 'setId', 'tripId', 'secToStation', 'timeToStation', 'location', 'destCode', 'destination', 'departTime', 'departInterval', 'departed', 'direction', 'trackCode')
         allTrains = []
         time = parser.parse(root['WhenCreated'])
         lineCode = root['Line']
@@ -46,9 +45,5 @@ class PredictionDetailedParse(base.Base):
                 departed = int(train['@Departed'])
                 direction = train['@Direction']
                 trackCode = train['@TrackCode']
-                allTrains.append((time, lineCode, lineName, scode, sname, smess, curTime, pcode, pname, lcid, setId, tid, secToStation, timeToStation, location, destCode, destination, departTime, departInterval, departed, direction, trackCode))
-        if len(allTrains) == 0:
-            return pandas.DataFrame(columns=columns)
-        df = pandas.DataFrame(allTrains, columns = columns)
-        df['timeToStation'] = df.timeToStation.map(lambda x:x.astype(np.float)/1E9)
-        return df
+                allTrains.append(PredictionDetailedRow(time, lineCode, lineName, scode, sname, smess, curTime, pcode, pname, lcid, setId, tid, secToStation, timeToStation, location, destCode, destination, departTime, departInterval, departed, direction, trackCode))
+        return allTrains

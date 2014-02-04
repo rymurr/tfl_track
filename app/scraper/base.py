@@ -37,7 +37,7 @@ def uploadToS3(fobj, filename):
         key = Key(bucket)
         key.key = 'xml/'+filename
         log.debug('Sending file {0} with key {1}'.format(filename, key.key))
-        key.set_contents_from_file(fobj)
+        key.set_contents_from_file(fobj, reduced_redundancy=True)
         sendToSqs([filename], 'tfl_queue_parse')
     except:
         log.exception('Unable to upload file {0}'.format(filename))

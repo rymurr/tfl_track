@@ -1,16 +1,14 @@
-import pandas
-import numpy as np
-
+from collections import namedtuple
 from dateutil import parser
 from parse import base
    
+LineStatusRow = namedtuple('LineStatus', ('lineStatusId', 'lineDetails','lineId', 'name', 'statusId','cssClass','description','isActive','statusTypeId', 'statusDesc', 'lineDisruptionId', 'disruptionCssClass','disruptionDesc', 'lineIsActive', 'lineStatusTypeId', 'lineStatusDesc','stationToId', 'stationToName', 'stationFromId', 'stationFromName'))
 class LineStatusParse(base.Base):   
     def __init__(self, hdf):
         super(LineStatusParse, self).__init__(hdf, 'dfLine', 'line')
 
     def parseToDataFrame(self, doc):
         root = doc['ArrayOfLineStatus']
-        columns = ('lineStatusId', 'lineDetails','lineId', 'name', 'statusId','cssClass','description','isActive','statusTypeId', 'statusDesc', 'lineDisruptionId', 'disruptionCssClass','disruptionDesc', 'lineIsActive', 'lineStatusTypeId', 'lineStatusDesc','stationToId', 'stationToName', 'stationFromId', 'stationFromName')
         allTrains = []
         stations = root['LineStatus']
         for station in stations:
@@ -47,19 +45,19 @@ class LineStatusParse(base.Base):
                     sid8 = stationFrom['@ID']
                     toName = stationTo['@Name']
                     fromName = stationFrom['@Name']
-                    allTrains.append((sid, stationDetails, sid2, name, sid3, css, desc, active, sid4, desc2, sid5, css2, desc3, active2, sid6, desc4, sid7, toName, sid8, fromName))
+                    allTrains.append(LineStatusRow(sid, stationDetails, sid2, name, sid3, css, desc, active, sid4, desc2, sid5, css2, desc3, active2, sid6, desc4, sid7, toName, sid8, fromName))
             else:
-                sid5 = np.nan
-                css2 = np.nan
-                desc3 = np.nan
-                active2 = np.nan
-                sid6 = np.nan
-                desc4 = np.nan
-                sid7 = np.nan
-                toName = np.nan
-                sid8 = np.nan
-                fromName = np.nan
+                sid5 = None
+                css2 = None
+                desc3 = None
+                active2 = None
+                sid6 = None
+                desc4 = None
+                sid7 = None
+                toName = None
+                sid8 = None
+                fromName = None
                 allTrains.append((sid, stationDetails, sid2, name, sid3, css, desc, active, sid4, desc2, sid5, css2, desc3, active2, sid6, desc4, sid7, toName, sid8, fromName))
-        return pandas.DataFrame(allTrains, columns = columns)
+        return allTrains
 
 
